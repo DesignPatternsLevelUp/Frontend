@@ -1,0 +1,61 @@
+.drawer {
+	position: fixed;
+	top: 0;
+	left: -300px;
+	width: 300px;
+	height: 100%;
+	background-color: #333;
+	color: white;
+	transition: left 0.3s ease;
+	z-index: 1000;
+}
+
+.drawer.open {
+	left: 0;
+}
+
+.drawer-content {
+	height: 100%;
+	padding: 1rem;
+	display: flex;
+	flex-direction: column;
+}
+
+.close-button {
+	background-color: transparent;
+	border: none;
+	color: white;
+	cursor: pointer;
+	margin-bottom: 1rem;
+	display: flex;
+	align-items: center;
+}
+
+.close-button span {
+	font-size: 1.5rem;
+	margin-right: 0.5rem;
+}
+
+.drawer-items {
+	margin-top: 25%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.drawer-item {
+	padding: 0.5rem 0;
+	color: white;
+	text-decoration: none;
+	transition: color 0.3s;
+	font-size: 1.4rem;
+}
+
+.drawer-item:hover {
+	font-weight: bold;
+}
+.drawer-item.active {
+	color: #38b2ac;
+	text-decoration: underline;
+}

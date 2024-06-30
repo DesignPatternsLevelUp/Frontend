@@ -1,0 +1,7 @@
+.content-area {
+	transition: transform 0.3s ease;
+}
+
+.drawer-open .content-area {
+	transform: translateX(300px); /* Adjust based on your drawer width */
+}

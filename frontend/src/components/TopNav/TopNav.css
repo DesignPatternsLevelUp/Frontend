@@ -1,0 +1,44 @@
+.navbar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 1.5rem;
+	background-color: #333;
+	color: white;
+	transition: transform 0.3s ease;
+}
+
+.drawer-open {
+	transform: translateX(300px); /* Adjust based on your drawer width */
+}
+
+.menu-icon {
+	background-color: transparent;
+	border: none;
+	color: white;
+	font-size: 1.5rem;
+	cursor: pointer;
+}
+
+.nav-items {
+	display: flex;
+	flex-direction: column;
+}
+
+.user-info {
+	display: flex;
+	align-items: center;
+}
+
+.user-text {
+	margin-right: 0.5rem;
+}
+
+.logout-button {
+	background-color: #38b2ac;
+	color: white;
+	border: none;
+	padding: 0.5rem 1rem;
+	cursor: pointer;
+	border-radius: 0.25rem;
+}
