@@ -26,7 +26,6 @@
 	border: none;
 	color: white;
 	cursor: pointer;
-	margin-bottom: 1rem;
 	display: flex;
 	align-items: center;
 }
@@ -37,25 +36,17 @@
 }
 
 .drawer-items {
-	margin-top: 25%;
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
-	align-items: center;
 }
 
 .drawer-item {
-	padding: 0.5rem 0;
+	padding: 1rem 0.5rem;
 	color: white;
 	text-decoration: none;
-	transition: color 0.3s;
-	font-size: 1.4rem;
 }
 
-.drawer-item:hover {
-	font-weight: bold;
-}
+.drawer-item:hover,
 .drawer-item.active {
-	color: #38b2ac;
-	text-decoration: underline;
+	font-weight: bold; /* Example of bold on hover and active */
 }

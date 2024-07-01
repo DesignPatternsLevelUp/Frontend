@@ -15,12 +15,11 @@ type TableData = {
 	id: number;
 	name: string;
 	description: string;
-	// Add more fields as needed
 };
 
 type TableProps = {
 	data: TableData[];
-	hasSearch?: boolean; // Indicates whether the table includes a search bar
+	hasSearch?: boolean;
 };
 
 const Table = ({ data, hasSearch = true }: TableProps) => {
@@ -47,7 +46,6 @@ const Table = ({ data, hasSearch = true }: TableProps) => {
 						<Th>ID</Th>
 						<Th>Name</Th>
 						<Th>Description</Th>
-						{/* Add more headers as needed */}
 					</Tr>
 				</Thead>
 				<Tbody>
@@ -56,7 +54,6 @@ const Table = ({ data, hasSearch = true }: TableProps) => {
 							<Td>{item.id}</Td>
 							<Td>{item.name}</Td>
 							<Td>{item.description}</Td>
-							{/* Render more columns as needed */}
 						</Tr>
 					))}
 				</Tbody>
