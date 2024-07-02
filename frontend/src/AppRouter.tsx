@@ -10,9 +10,9 @@ const AppRouter = () => {
 		<>
 			<TopNav />
 			<Routes>
-				<Route path="/companies" Component={CompaniesPage} />
+				<Route path="/" Component={CompaniesPage} />
 				<Route path="/market" Component={MarketPage} />
-				<Route path="/investors" Component={InvestorsPage} />\
+				<Route path="/investors" Component={InvestorsPage} />
 				<Route path="/trade" Component={TradePage} />
 			</Routes>
 		</>
