@@ -36,7 +36,7 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({
 					<Box>
 						<Link
 							as={RouterLink}
-							to="/companies"
+							to="/"
 							className={`drawer-item ${
 								location.pathname === "/companies" ? "active" : ""
 							}`}
