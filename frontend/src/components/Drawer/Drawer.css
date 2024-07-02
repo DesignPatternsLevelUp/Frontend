@@ -48,5 +48,5 @@
 
 .drawer-item:hover,
 .drawer-item.active {
-	font-weight: bold; /* Example of bold on hover and active */
+	font-weight: bold;
 }

@@ -9,7 +9,7 @@
 }
 
 .drawer-open {
-	transform: translateX(300px); /* Adjust based on your drawer width */
+	transform: translateX(300px);
 }
 
 .menu-icon {

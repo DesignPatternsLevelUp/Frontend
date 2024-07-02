@@ -1,78 +1,86 @@
 import React, { useState } from "react";
-import {
-	Box,
-	Heading,
-	Table,
-	Thead,
-	Tbody,
-	Tr,
-	Th,
-	Td,
-	Input,
-	InputGroup,
-	InputLeftElement,
-} from "@chakra-ui/react";
-import { SearchIcon } from "@chakra-ui/icons";
+import SharedTable from "../../components/Table/Table";
+import { Td } from "@chakra-ui/react";
 
-type Company = {
-	id: number;
-	name: string;
-	shareCode: string;
+type MarketData = {
+	stock: string;
+	stockCode: string;
+	numStocks: number;
+	valStocks: string;
 };
 
 const MarketPage = ({ isDrawerOpen }: { isDrawerOpen: boolean }) => {
-	// Mock data for companies
 	const [searchTerm, setSearchTerm] = useState("");
-	const companies: Company[] = [
-		{ id: 1, name: "Company A", shareCode: "COMP-A" },
-		{ id: 2, name: "Company B", shareCode: "COMP-B" },
-		{ id: 3, name: "Company C", shareCode: "COMP-C" },
-	];
 
-	const filteredCompanies = companies.filter((company) =>
-		company.name.toLowerCase().includes(searchTerm.toLowerCase())
-	);
+	const marketData: MarketData[] = [
+		{
+			stock: "Central Revenue Service",
+			stockCode: "CRA",
+			numStocks: 10000,
+			valStocks: "R100000",
+		},
+		{
+			stock: "Northern Energy",
+			stockCode: "NE",
+			numStocks: 5000,
+			valStocks: "R50000",
+		},
+		{
+			stock: "Central Revenue Service",
+			stockCode: "CRA",
+			numStocks: 10000,
+			valStocks: "R100000",
+		},
+		{
+			stock: "Northern Energy",
+			stockCode: "NE",
+			numStocks: 5000,
+			valStocks: "R50000",
+		},
+		{
+			stock: "Central Revenue Service",
+			stockCode: "CRA",
+			numStocks: 10000,
+			valStocks: "R100000",
+		},
+		{
+			stock: "Northern Energy",
+			stockCode: "NE",
+			numStocks: 5000,
+			valStocks: "R50000",
+		},
+	];
 
 	const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setSearchTerm(event.target.value);
 	};
 
+	const filteredMarket = marketData.filter((item) =>
+		item.stock.toLowerCase().includes(searchTerm.toLowerCase())
+	);
+
 	return (
-		<Box p={4} className={`content-area ${isDrawerOpen ? "drawer-open" : ""}`}>
-			<Heading size="lg" mb={4}>
-				Market
-			</Heading>
-			<InputGroup mb={4} width="100%">
-				<InputLeftElement pointerEvents="none">
-					<SearchIcon color="gray.300" />
-				</InputLeftElement>
-				<Input
-					type="text"
-					placeholder="Search by company name..."
-					value={searchTerm}
-					onChange={handleSearchChange}
-					borderRadius="md"
-				/>
-			</InputGroup>
-			<Table variant="simple">
-				<Thead>
-					<Tr>
-						<Th>ID</Th>
-						<Th>Name</Th>
-						<Th>Share Code</Th>
-					</Tr>
-				</Thead>
-				<Tbody>
-					{filteredCompanies.map((company) => (
-						<Tr key={company.id}>
-							<Td>{company.id}</Td>
-							<Td>{company.name}</Td>
-							<Td>{company.shareCode}</Td>
-						</Tr>
-					))}
-				</Tbody>
-			</Table>
-		</Box>
+		<SharedTable
+			title="Market"
+			data={filteredMarket}
+			headers={[
+				"Stock Name",
+				"Stock Code",
+				"Number of Stocks",
+				"Value of Stocks",
+			]}
+			renderRow={(item: MarketData) => (
+				<>
+					<Td>{item.stock}</Td>
+					<Td>{item.stockCode}</Td>
+					<Td>{item.numStocks}</Td>
+					<Td>{item.valStocks}</Td>
+				</>
+			)}
+			searchEnabled={true}
+			addButtonEnabled={false}
+			isDrawerOpen={isDrawerOpen}
+		/>
 	);
 };
 
