@@ -33,7 +33,6 @@ type MarketData = {
 	valStocks: string;
 };
 type Investor = {
-	id: number;
 	name: string;
 	numOfStocks: number;
 	valueOfStocks: string;
@@ -50,7 +49,7 @@ type SharedTableProps = {
 	title: string;
 	data: DataItem[];
 	headers: string[];
-	renderRow: (item: DataItem) => JSX.Element;
+	renderRow: (item: DataItem) => JSX.Element | Element;
 	searchEnabled?: boolean;
 	addButtonEnabled?: boolean;
 	isDrawerOpen: boolean;
