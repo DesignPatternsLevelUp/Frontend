@@ -6,8 +6,8 @@ import { Button } from "@chakra-ui/react";
 import { getUserDetails } from "../../services/authentication";
 
 const TopNav = () => {
-	const [isDrawerOpen, setIsDrawerOpen] = useState(true);
-	const [userDetails, setUserDetails] = useState(null);
+	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+	const [email, setEmail] = useState('')
 	const handleDrawerClose = () => {
 		setIsDrawerOpen(false);
 	};
@@ -18,12 +18,14 @@ const TopNav = () => {
 	useEffect(() => {
 		async function userDetails() {
 			const userDetails = await getUserDetails();
-			setUserDetails(userDetails);
-			
+			if (!userDetails){
+				setEmail(userDetails.email)
+			}
 		}
 		userDetails();
 	}, [sessionStorage]);
 	
+
 
 	return (
 		<>
@@ -44,7 +46,7 @@ const TopNav = () => {
 
 				<div className="user-info">
 					<span className="user-text">
-						<span className="bold-name">{userDetails.email}</span> -{" "}
+						<span className="bold-name">{email}</span> -{" "}
 						<span className="italic-role">Admin</span>
 					</span>
 
