@@ -113,7 +113,7 @@ const SharedTable: React.FC<SharedTableProps> = ({
 				)}
 			</Box>
 			<Box overflowX="auto">
-				<Table variant="simple" minWidth="100%">
+				<Table variant="striped" colorScheme="gray" minWidth="100%">
 					<Thead>
 						<Tr>
 							{headers.map((header, index) => (

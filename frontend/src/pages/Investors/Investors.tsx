@@ -23,23 +23,21 @@ const InvestorsPage = ({ isDrawerOpen }: { isDrawerOpen: boolean }) => {
 	);
 
 	return (
-		<div style={{ backgroundColor: "#f0f0f0", minHeight: "100vh" }}>
-			<SharedTable
-				title="Investors"
-				data={filteredMarket}
-				headers={["Stock Name", "Number of Stocks", "Value of Stocks"]}
-				renderRow={(item: Investor) => (
-					<>
-						<Td>{item.name}</Td>
-						<Td>{item.numOfStocks}</Td>
-						<Td>{item.valueOfStocks}</Td>
-					</>
-				)}
-				searchEnabled={true}
-				addButtonEnabled={true}
-				isDrawerOpen={isDrawerOpen}
-			/>
-		</div>
+		<SharedTable
+			title="Investors"
+			data={filteredMarket}
+			headers={["Stock Name", "Number of Stocks", "Value of Stocks"]}
+			renderRow={(item: Investor) => (
+				<>
+					<Td>{item.name}</Td>
+					<Td>{item.numOfStocks}</Td>
+					<Td>{item.valueOfStocks}</Td>
+				</>
+			)}
+			searchEnabled={true}
+			addButtonEnabled={true}
+			isDrawerOpen={isDrawerOpen}
+		/>
 	);
 };
 

@@ -60,29 +60,27 @@ const MarketPage = ({ isDrawerOpen }: { isDrawerOpen: boolean }) => {
 	);
 
 	return (
-		<div style={{ backgroundColor: "#f0f0f0", minHeight: "100vh" }}>
-			<SharedTable
-				title="Market"
-				data={filteredMarket}
-				headers={[
-					"Stock Name",
-					"Stock Code",
-					"Number of Stocks",
-					"Value of Stocks",
-				]}
-				renderRow={(item: MarketData) => (
-					<>
-						<Td>{item.stock}</Td>
-						<Td>{item.stockCode}</Td>
-						<Td>{item.numStocks}</Td>
-						<Td>{item.valStocks}</Td>
-					</>
-				)}
-				searchEnabled={true}
-				addButtonEnabled={false}
-				isDrawerOpen={isDrawerOpen}
-			/>
-		</div>
+		<SharedTable
+			title="Market"
+			data={filteredMarket}
+			headers={[
+				"Stock Name",
+				"Stock Code",
+				"Number of Stocks",
+				"Value of Stocks",
+			]}
+			renderRow={(item: MarketData) => (
+				<>
+					<Td>{item.stock}</Td>
+					<Td>{item.stockCode}</Td>
+					<Td>{item.numStocks}</Td>
+					<Td>{item.valStocks}</Td>
+				</>
+			)}
+			searchEnabled={true}
+			addButtonEnabled={false}
+			isDrawerOpen={isDrawerOpen}
+		/>
 	);
 };
 
