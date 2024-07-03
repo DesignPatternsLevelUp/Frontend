@@ -90,7 +90,7 @@ const SharedTable: React.FC<SharedTableProps> = ({
 				mb={4}
 			>
 				{searchEnabled && (
-					<InputGroup width={{ base: "100%", md: "90%" }}>
+					<InputGroup>
 						<InputLeftElement pointerEvents="none">
 							<SearchIcon color="gray.300" />
 						</InputLeftElement>
