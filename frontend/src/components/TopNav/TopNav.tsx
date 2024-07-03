@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "./TopNav.css";
 import DrawerComponent from "../Drawer/Drawer";
+import logo from "../../assets/logo.png";
 
 const TopNav = () => {
 	const [isDrawerOpen, setIsDrawerOpen] = useState(true);
@@ -24,11 +25,18 @@ const TopNav = () => {
 					☰
 				</button>
 
-				<div className="nav-items">
-					<span className="user-text">John Doe - Admin</span>
+				<div className="navbar-logo">
+					<img src={logo} alt="Logo" className="logo-img" />
 				</div>
 
+				<div className="nav-items"></div>
+
 				<div className="user-info">
+					<span className="user-text">
+						<span className="bold-name">John Doe</span> -{" "}
+						<span className="italic-role">Admin</span>
+					</span>
+
 					<button className="logout-button">Logout</button>
 				</div>
 			</div>

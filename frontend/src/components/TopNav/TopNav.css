@@ -5,11 +5,18 @@
 	padding: 1.5rem;
 	background-color: #333;
 	color: white;
-	transition: transform 0.3s ease;
 }
 
-.drawer-open {
-	transform: translateX(300px);
+.navbar-logo {
+	flex: 1;
+	text-align: center;
+}
+
+.logo-img {
+	height: auto;
+	max-height: 50px;
+	display: block;
+	margin: 0 auto;
 }
 
 .menu-icon {
@@ -18,11 +25,6 @@
 	color: white;
 	font-size: 1.5rem;
 	cursor: pointer;
-}
-
-.nav-items {
-	display: flex;
-	flex-direction: column;
 }
 
 .user-info {
@@ -34,7 +36,16 @@
 	margin-right: 0.5rem;
 }
 
+.bold-name {
+	font-weight: bold;
+}
+
+.italic-role {
+	font-style: italic;
+}
+
 .logout-button {
+	margin-left: 1rem;
 	background-color: #38b2ac;
 	color: white;
 	border: none;
