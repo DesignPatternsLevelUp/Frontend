@@ -8,51 +8,62 @@ import {
 	Tr,
 	Th,
 	Td,
-	Input,
-	InputGroup,
-	InputLeftElement,
+	Select,
+	Spinner,
 } from "@chakra-ui/react";
-import { SearchIcon } from "@chakra-ui/icons";
-import { getAllUsers, User } from "../../services/stockExchangeService";
-
-type Investor = {
-	name: string;
-	numOfStocks: number;
-	valueOfStocks: string;
-};
+import {
+	getAllUsers,
+	getUserStockHoldings,
+} from "../../services/stockExchangeService";
+import { User, UserStockHoldings } from "../../types/types";
 
 const InvestorsPage = ({ isDrawerOpen }: { isDrawerOpen: boolean }) => {
-	const [searchTerm, setSearchTerm] = useState("");
-	const [investors, setInvestors] = useState<Investor[]>([]);
 	const [users, setUsers] = useState<User[]>([]);
+	const [selectedUserId, setSelectedUserId] = useState<string>("");
+	const [userStockHoldings, setUserStockHoldings] = useState<
+		UserStockHoldings[]
+	>([]);
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	useEffect(() => {
-		const fetchedInvestors: Investor[] = [
-			{ name: "John Doe", numOfStocks: 500, valueOfStocks: "R5000" },
-			{ name: "Jane Smith", numOfStocks: 1000, valueOfStocks: "R10000" },
-		];
-		setInvestors(fetchedInvestors);
-
 		async function fetchUsers() {
 			try {
+				setIsLoading(true);
 				const fetchedUsers = await getAllUsers();
 				setUsers(fetchedUsers);
 			} catch (error) {
 				console.error("Error fetching users:", error);
+			} finally {
+				setIsLoading(false);
 			}
 		}
 
 		fetchUsers();
 	}, []);
-	console.log(users);
 
-	const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setSearchTerm(event.target.value);
+	useEffect(() => {
+		async function fetchUserStockHoldings() {
+			if (selectedUserId) {
+				try {
+					setIsLoading(true);
+					const stockHoldings = await getUserStockHoldings(selectedUserId);
+					setUserStockHoldings(stockHoldings);
+				} catch (error) {
+					console.error("Error fetching user stock holdings:", error);
+				} finally {
+					setIsLoading(false);
+				}
+			}
+		}
+
+		fetchUserStockHoldings();
+	}, [selectedUserId]);
+
+	const handleUserSelectChange = (
+		event: React.ChangeEvent<HTMLSelectElement>
+	) => {
+		setSelectedUserId(event.target.value);
 	};
-
-	const filteredInvestors = investors.filter((item) =>
-		item.name.toLowerCase().includes(searchTerm.toLowerCase())
-	);
 
 	return (
 		<Box p={4} className={`content-area ${isDrawerOpen ? "drawer-open" : ""}`}>
@@ -65,39 +76,49 @@ const InvestorsPage = ({ isDrawerOpen }: { isDrawerOpen: boolean }) => {
 				alignItems="center"
 				mb={4}
 			>
-				<InputGroup>
-					<InputLeftElement pointerEvents="none">
-						<SearchIcon color="gray.300" />
-					</InputLeftElement>
-					<Input
-						type="text"
-						placeholder="Search investors..."
-						value={searchTerm}
-						onChange={handleSearchChange}
-						borderRadius="md"
-					/>
-				</InputGroup>
+				<Select
+					placeholder="Select a user"
+					value={selectedUserId}
+					onChange={handleUserSelectChange}
+				>
+					{users.map((user) => (
+						<option key={user.id} value={user.id}>
+							{user.id}
+						</option>
+					))}
+				</Select>
 			</Box>
-			<Box overflowX="auto">
-				<Table variant="striped" colorScheme="gray" minWidth="100%">
-					<Thead>
-						<Tr>
-							<Th>Investor Name</Th>
-							<Th>Number of Stocks</Th>
-							<Th>Value of Stocks</Th>
-						</Tr>
-					</Thead>
-					<Tbody>
-						{filteredInvestors.map((investor, index) => (
-							<Tr key={index}>
-								<Td>{investor.name}</Td>
-								<Td>{investor.numOfStocks}</Td>
-								<Td>{investor.valueOfStocks}</Td>
+			{isLoading ? (
+				<Box
+					display="flex"
+					justifyContent="center"
+					alignItems="center"
+					height="50vh"
+				>
+					<Spinner size="xl" />
+				</Box>
+			) : (
+				<Box overflowX="auto">
+					<Table variant="striped" colorScheme="gray" minWidth="100%">
+						<Thead>
+							<Tr>
+								<Th>Business ID</Th>
+								<Th>Quantity</Th>
+								<Th>Current Market Value</Th>
 							</Tr>
-						))}
-					</Tbody>
-				</Table>
-			</Box>
+						</Thead>
+						<Tbody>
+							{userStockHoldings.map((holding, index) => (
+								<Tr key={index}>
+									<Td>{holding.businessId}</Td>
+									<Td>{holding.quantity}</Td>
+									<Td>{holding.currentMarketValue}</Td>
+								</Tr>
+							))}
+						</Tbody>
+					</Table>
+				</Box>
+			)}
 		</Box>
 	);
 };

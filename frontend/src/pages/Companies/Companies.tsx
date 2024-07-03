@@ -11,6 +11,7 @@ import {
 	FormControl,
 	FormLabel,
 	Select,
+	Spinner,
 } from "@chakra-ui/react";
 import {
 	getAllBusinesses,
@@ -34,14 +35,18 @@ const CompaniesPage = ({ isDrawerOpen }: { isDrawerOpen: boolean }) => {
 	const [businesses, setBusinesses] = useState<Business[]>([]);
 	const [stockholders, setStockholders] = useState<Stockholder[]>([]);
 	const [selectedBusiness, setSelectedBusiness] = useState<Business>(null);
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	useEffect(() => {
 		async function fetchBusinesses() {
 			try {
+				setIsLoading(true);
 				const businessesData = await getAllBusinesses();
 				setBusinesses(businessesData);
 			} catch (error) {
 				console.error("Error fetching businesses:", error);
+			} finally {
+				setIsLoading(false);
 			}
 		}
 
@@ -57,6 +62,7 @@ const CompaniesPage = ({ isDrawerOpen }: { isDrawerOpen: boolean }) => {
 
 		try {
 			if (selected) {
+				setIsLoading(true);
 				const stockholdersData = await getBusinessStockholders(selected.id);
 				setStockholders(stockholdersData);
 			} else {
@@ -65,6 +71,8 @@ const CompaniesPage = ({ isDrawerOpen }: { isDrawerOpen: boolean }) => {
 		} catch (error) {
 			console.error("Error fetching business stockholders:", error);
 			setStockholders([]);
+		} finally {
+			setIsLoading(false);
 		}
 	};
 
@@ -91,7 +99,16 @@ const CompaniesPage = ({ isDrawerOpen }: { isDrawerOpen: boolean }) => {
 					</Select>
 				</FormControl>
 			</Box>
-			{selectedBusiness && (
+			{isLoading ? (
+				<Box
+					display="flex"
+					justifyContent="center"
+					alignItems="center"
+					height="50vh"
+				>
+					<Spinner size="xl" />
+				</Box>
+			) : selectedBusiness ? (
 				<Box overflowX="auto">
 					<Table variant="striped" colorScheme="gray" minWidth="100%">
 						<Thead>
@@ -112,6 +129,8 @@ const CompaniesPage = ({ isDrawerOpen }: { isDrawerOpen: boolean }) => {
 						</Tbody>
 					</Table>
 				</Box>
+			) : (
+				<Box>No company selected</Box>
 			)}
 		</Box>
 	);

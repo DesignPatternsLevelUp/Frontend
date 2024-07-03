@@ -1,4 +1,4 @@
-import { Business, User } from "../types/types";
+import { Business, User, UserStockHoldings } from "../types/types";
 
 const BASE_URL = "https://api.mese.projects.bbdgrad.com";
 
@@ -61,14 +61,37 @@ export async function getAllUsers(): Promise<User[]> {
 		}
 
 		const users: { data: User[] } = await response.json();
-
+		console.log("hello", response.json());
 		const mappedUsers: User[] = users.data.map((user) => ({
-			userID: user.userID,
+			id: user.id,
+			bankAccount: user.bankAccount,
 		}));
 
 		return mappedUsers;
 	} catch (error) {
 		console.error("Error fetching users:", error);
+		throw error;
+	}
+}
+
+export async function getUserStockHoldings(
+	userId: string
+): Promise<UserStockHoldings[]> {
+	try {
+		const response = await fetch(`${BASE_URL}/users/${userId}`, {
+			headers: {
+				Accept: "application/json",
+			},
+		});
+
+		if (!response.ok) {
+			throw new Error("Failed to fetch user stock holdings");
+		}
+
+		const stockHoldings: { data: UserStockHoldings[] } = await response.json();
+		return stockHoldings.data;
+	} catch (error) {
+		console.error("Error fetching user stock holdings:", error);
 		throw error;
 	}
 }

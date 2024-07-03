@@ -11,6 +11,7 @@ import {
 	Input,
 	InputGroup,
 	InputLeftElement,
+	Spinner,
 } from "@chakra-ui/react";
 import { SearchIcon } from "@chakra-ui/icons";
 import { getAllBusinesses } from "../../services/stockExchangeService";
@@ -28,6 +29,7 @@ type MarketPageProps = {
 const MarketPage: React.FC<MarketPageProps> = ({ isDrawerOpen }) => {
 	const [searchTerm, setSearchTerm] = useState("");
 	const [businesses, setBusinesses] = useState<Business[]>([]);
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	useEffect(() => {
 		fetchBusinesses();
@@ -35,10 +37,13 @@ const MarketPage: React.FC<MarketPageProps> = ({ isDrawerOpen }) => {
 
 	const fetchBusinesses = async () => {
 		try {
+			setIsLoading(true);
 			const businessesData = await getAllBusinesses();
 			setBusinesses(businessesData);
 		} catch (error) {
 			console.error("Error fetching businesses:", error);
+		} finally {
+			setIsLoading(false);
 		}
 	};
 
@@ -74,26 +79,37 @@ const MarketPage: React.FC<MarketPageProps> = ({ isDrawerOpen }) => {
 					/>
 				</InputGroup>
 			</Box>
-			<Box overflowX="auto">
-				<Table variant="striped" colorScheme="gray" minWidth="100%">
-					<Thead>
-						<Tr>
-							<Th>Name</Th>
-							<Th>Stock Code</Th>
-							<Th>Current Market Value</Th>
-						</Tr>
-					</Thead>
-					<Tbody>
-						{filteredBusinesses.map((business, index) => (
-							<Tr key={index}>
-								<Td>{business.name}</Td>
-								<Td>{business.id}</Td>
-								<Td>{business.currentMarketValue}</Td>
+			{isLoading ? (
+				<Box
+					display="flex"
+					justifyContent="center"
+					alignItems="center"
+					height="50vh"
+				>
+					<Spinner size="xl" />
+				</Box>
+			) : (
+				<Box overflowX="auto">
+					<Table variant="striped" colorScheme="gray" minWidth="100%">
+						<Thead>
+							<Tr>
+								<Th>Name</Th>
+								<Th>Stock Code</Th>
+								<Th>Current Market Value</Th>
 							</Tr>
-						))}
-					</Tbody>
-				</Table>
-			</Box>
+						</Thead>
+						<Tbody>
+							{filteredBusinesses.map((business, index) => (
+								<Tr key={index}>
+									<Td>{business.name}</Td>
+									<Td>{business.id}</Td>
+									<Td>{business.currentMarketValue}</Td>
+								</Tr>
+							))}
+						</Tbody>
+					</Table>
+				</Box>
+			)}
 		</Box>
 	);
 };

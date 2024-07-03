@@ -11,5 +11,11 @@ export type Stockholder = {
 };
 
 export type User = {
-	userID: string;
+	id: string;
+	bankAccount: string | null;
+};
+export type UserStockHoldings = {
+	businessId: number;
+	quantity: string;
+	currentMarketValue: number;
 };
