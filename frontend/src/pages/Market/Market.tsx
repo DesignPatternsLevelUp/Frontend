@@ -1,85 +1,100 @@
-import React, { useState } from "react";
-import SharedTable from "../../components/Table/Table";
-import { Td } from "@chakra-ui/react";
+import React, { useState, useEffect } from "react";
+import {
+	Box,
+	Heading,
+	Table,
+	Thead,
+	Tbody,
+	Tr,
+	Th,
+	Td,
+	Input,
+	InputGroup,
+	InputLeftElement,
+} from "@chakra-ui/react";
+import { SearchIcon } from "@chakra-ui/icons";
+import { getAllBusinesses } from "../../services/stockExchangeService";
 
-type MarketData = {
-	stock: string;
-	stockCode: string;
-	numStocks: number;
-	valStocks: string;
+type Business = {
+	id: number;
+	name: string;
+	currentMarketValue: number;
 };
 
-const MarketPage = ({ isDrawerOpen }: { isDrawerOpen: boolean }) => {
-	const [searchTerm, setSearchTerm] = useState("");
+type MarketPageProps = {
+	isDrawerOpen: boolean;
+};
 
-	const marketData: MarketData[] = [
-		{
-			stock: "Central Revenue Service",
-			stockCode: "CRA",
-			numStocks: 10000,
-			valStocks: "R100000",
-		},
-		{
-			stock: "Northern Energy",
-			stockCode: "NE",
-			numStocks: 5000,
-			valStocks: "R50000",
-		},
-		{
-			stock: "Central Revenue Service",
-			stockCode: "CRA",
-			numStocks: 10000,
-			valStocks: "R100000",
-		},
-		{
-			stock: "Northern Energy",
-			stockCode: "NE",
-			numStocks: 5000,
-			valStocks: "R50000",
-		},
-		{
-			stock: "Central Revenue Service",
-			stockCode: "CRA",
-			numStocks: 10000,
-			valStocks: "R100000",
-		},
-		{
-			stock: "Northern Energy",
-			stockCode: "NE",
-			numStocks: 5000,
-			valStocks: "R50000",
-		},
-	];
+const MarketPage: React.FC<MarketPageProps> = ({ isDrawerOpen }) => {
+	const [searchTerm, setSearchTerm] = useState("");
+	const [businesses, setBusinesses] = useState<Business[]>([]);
+
+	useEffect(() => {
+		fetchBusinesses();
+	}, []);
+
+	const fetchBusinesses = async () => {
+		try {
+			const businessesData = await getAllBusinesses();
+			setBusinesses(businessesData);
+		} catch (error) {
+			console.error("Error fetching businesses:", error);
+		}
+	};
 
 	const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setSearchTerm(event.target.value);
 	};
 
-	const filteredMarket = marketData.filter((item) =>
-		item.stock.toLowerCase().includes(searchTerm.toLowerCase())
+	const filteredBusinesses = businesses.filter((business) =>
+		business.name.toLowerCase().includes(searchTerm.toLowerCase())
 	);
 
 	return (
-		<SharedTable
-			title="Market"
-			data={filteredMarket}
-			headers={[
-				"Stock Name",
-				"Stock Code",
-				"Number of Stocks",
-				"Value of Stocks",
-			]}
-			renderRow={(item: MarketData) => (
-				<>
-					<Td>{item.stock}</Td>
-					<Td>{item.stockCode}</Td>
-					<Td>{item.numStocks}</Td>
-					<Td>{item.valStocks}</Td>
-				</>
-			)}
-			searchEnabled={true}
-			isDrawerOpen={isDrawerOpen}
-		/>
+		<Box p={4} className={`content-area ${isDrawerOpen ? "drawer-open" : ""}`}>
+			<Heading size="lg" mb={4}>
+				Market
+			</Heading>
+			<Box
+				display="flex"
+				justifyContent="space-between"
+				alignItems="center"
+				mb={4}
+			>
+				<InputGroup>
+					<InputLeftElement pointerEvents="none">
+						<SearchIcon color="gray.300" />
+					</InputLeftElement>
+					<Input
+						type="text"
+						placeholder="Search market..."
+						value={searchTerm}
+						onChange={handleSearchChange}
+						borderRadius="md"
+					/>
+				</InputGroup>
+			</Box>
+			<Box overflowX="auto">
+				<Table variant="striped" colorScheme="gray" minWidth="100%">
+					<Thead>
+						<Tr>
+							<Th>Name</Th>
+							<Th>Stock Code</Th>
+							<Th>Current Market Value</Th>
+						</Tr>
+					</Thead>
+					<Tbody>
+						{filteredBusinesses.map((business, index) => (
+							<Tr key={index}>
+								<Td>{business.name}</Td>
+								<Td>{business.id}</Td>
+								<Td>{business.currentMarketValue}</Td>
+							</Tr>
+						))}
+					</Tbody>
+				</Table>
+			</Box>
+		</Box>
 	);
 };
 

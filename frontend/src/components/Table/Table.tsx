@@ -1,3 +1,5 @@
+// components/Table/Table.tsx
+
 import React, { useState } from "react";
 import {
 	Box,
@@ -20,11 +22,12 @@ import {
 	ModalBody,
 	FormControl,
 	FormLabel,
-	Input as ChakraInput,
+	Select,
 	useDisclosure,
 } from "@chakra-ui/react";
 import { SearchIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
+import { getBusinessStockholders } from "../../services/stockExchangeService";
 
 type MarketData = {
 	stock: string;
@@ -32,6 +35,7 @@ type MarketData = {
 	numStocks: number;
 	valStocks: string;
 };
+
 type Investor = {
 	name: string;
 	numOfStocks: number;
@@ -44,7 +48,14 @@ type Companies = {
 	valueOfStocks: string;
 };
 
-type DataItem = MarketData | Investor | Companies;
+type Business = {
+	id: number;
+	name: string;
+	currentMarketValue: number;
+};
+
+type DataItem = MarketData | Investor | Companies | Business;
+
 type SharedTableProps = {
 	title: string;
 	data: DataItem[];
@@ -62,9 +73,14 @@ const SharedTable: React.FC<SharedTableProps> = ({
 	renderRow,
 	searchEnabled = false,
 	isDrawerOpen,
+	selectionEnabled = false,
 }) => {
 	const [searchTerm, setSearchTerm] = useState("");
 	const { isOpen, onOpen, onClose } = useDisclosure();
+	const [selectedBusinessId, setSelectedBusinessId] = useState<number | null>(
+		null
+	);
+	const [stockholders, setStockholders] = useState<any[]>([]); // Define the type based on API response
 
 	const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setSearchTerm(event.target.value);
@@ -72,6 +88,21 @@ const SharedTable: React.FC<SharedTableProps> = ({
 
 	const handleAddItem = () => {
 		onOpen();
+	};
+
+	const handleBusinessSelectChange = async (
+		event: React.ChangeEvent<HTMLSelectElement>
+	) => {
+		const id = parseInt(event.target.value);
+		setSelectedBusinessId(id);
+
+		try {
+			const stockholdersData = await getBusinessStockholders(id);
+			setStockholders(stockholdersData);
+		} catch (error) {
+			console.error("Error fetching business stockholders:", error);
+			setStockholders([]); // Clear stockholders on error
+		}
 	};
 
 	const filteredData = data.filter((item) =>
@@ -89,7 +120,7 @@ const SharedTable: React.FC<SharedTableProps> = ({
 				alignItems="center"
 				mb={4}
 			>
-				{searchEnabled && (
+				{searchEnabled && title !== "Companies" && (
 					<InputGroup>
 						<InputLeftElement pointerEvents="none">
 							<SearchIcon color="gray.300" />
@@ -102,6 +133,20 @@ const SharedTable: React.FC<SharedTableProps> = ({
 							borderRadius="md"
 						/>
 					</InputGroup>
+				)}
+
+				{title === "Companies" && selectionEnabled && (
+					<FormControl ml={4}>
+						<FormLabel>Select a Company</FormLabel>
+						<Select onChange={handleBusinessSelectChange}>
+							<option value="">Select...</option>
+							{data.map((business: Business) => (
+								<option key={business.id} value={business.id}>
+									{business.name}
+								</option>
+							))}
+						</Select>
+					</FormControl>
 				)}
 			</Box>
 			<Box overflowX="auto">
@@ -139,20 +184,17 @@ const SharedTable: React.FC<SharedTableProps> = ({
 							{title === "Companies" && (
 								<>
 									<FormLabel>Company Name</FormLabel>
-									<ChakraInput placeholder="Enter company name" />
+									<Input placeholder="Enter company name" />
 								</>
 							)}
 							{title === "Investors" && (
 								<>
 									<FormLabel>Investor Name</FormLabel>
-									<ChakraInput placeholder="Enter investor name" />
+									<Input placeholder="Enter investor name" />
 									<FormLabel>Shares</FormLabel>
-									<ChakraInput
-										type="number"
-										placeholder="Enter number of shares"
-									/>
+									<Input type="number" placeholder="Enter number of shares" />
 									<FormLabel>Stock Value</FormLabel>
-									<ChakraInput type="number" placeholder="Enter stock value" />
+									<Input type="number" placeholder="Enter stock value" />
 								</>
 							)}
 						</FormControl>

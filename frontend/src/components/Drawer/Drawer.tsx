@@ -73,7 +73,7 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({
 						>
 							Market
 						</Link>
-						<Link
+						{/* <Link
 							as={RouterLink}
 							to="/trade"
 							className={`drawer-item ${
@@ -85,7 +85,7 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({
 							my={2}
 						>
 							Trade
-						</Link>
+						</Link> */}
 					</Box>
 				</DrawerBody>
 			</DrawerContent>

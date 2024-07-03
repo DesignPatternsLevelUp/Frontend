@@ -147,6 +147,7 @@ const Trade = () => {
 							name="stockQuantity"
 							value={formData.stockQuantity}
 							onChange={handleInputChange}
+							readOnly
 						/>
 						{!stockQuantityValid && formSubmitted && (
 							<FormErrorMessage>

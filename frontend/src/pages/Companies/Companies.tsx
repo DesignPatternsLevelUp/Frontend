@@ -1,46 +1,119 @@
-import React, { useState } from "react";
-import SharedTable from "../../components/Table/Table";
-import { Td } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
+import {
+	Box,
+	Heading,
+	Table,
+	Thead,
+	Tbody,
+	Tr,
+	Th,
+	Td,
+	FormControl,
+	FormLabel,
+	Select,
+} from "@chakra-ui/react";
+import {
+	getAllBusinesses,
+	getBusinessStockholders,
+} from "../../services/stockExchangeService";
 
-type Companies = {
-	investor: string;
-	numOfStocks: number;
-	valueOfStocks: string;
+type Business = {
+	id: number;
+	name: string;
+	currentMarketValue: number;
+};
+
+type Stockholder = {
+	holderId: string;
+	holderType: string;
+	quantity: number;
+	bankAccount: string;
 };
 
 const CompaniesPage = ({ isDrawerOpen }: { isDrawerOpen: boolean }) => {
-	const [searchTerm, setSearchTerm] = useState("");
+	const [businesses, setBusinesses] = useState<Business[]>([]);
+	const [stockholders, setStockholders] = useState<Stockholder[]>([]);
+	const [selectedBusiness, setSelectedBusiness] = useState<Business>(null);
 
-	const CompaniesData: Companies[] = [
-		{ investor: "Investor A", numOfStocks: 100, valueOfStocks: "R5000" },
-		{ investor: "Investor B", numOfStocks: 150, valueOfStocks: "R7500" },
-		{ investor: "Investor C", numOfStocks: 200, valueOfStocks: "R10000" },
-		{ investor: "Investor D", numOfStocks: 50, valueOfStocks: "R2500" },
-	];
+	useEffect(() => {
+		async function fetchBusinesses() {
+			try {
+				const businessesData = await getAllBusinesses();
+				setBusinesses(businessesData);
+			} catch (error) {
+				console.error("Error fetching businesses:", error);
+			}
+		}
 
-	const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setSearchTerm(event.target.value);
+		fetchBusinesses();
+	}, []);
+
+	const handleBusinessSelectChange = async (
+		event: React.ChangeEvent<HTMLSelectElement>
+	) => {
+		const id = parseInt(event.target.value);
+		const selected = businesses.find((business) => business.id === id);
+		setSelectedBusiness(selected);
+
+		try {
+			if (selected) {
+				const stockholdersData = await getBusinessStockholders(selected.id);
+				setStockholders(stockholdersData);
+			} else {
+				setStockholders([]);
+			}
+		} catch (error) {
+			console.error("Error fetching business stockholders:", error);
+			setStockholders([]);
+		}
 	};
 
-	const filteredMarket = CompaniesData.filter((item) =>
-		item.investor.toLowerCase().includes(searchTerm.toLowerCase())
-	);
-
 	return (
-		<SharedTable
-			title="Company's"
-			data={filteredMarket}
-			headers={["Investor", "No. Stocks", "Value of Stocks"]}
-			renderRow={(item: Companies) => (
-				<>
-					<Td>{item.investor}</Td>
-					<Td>{item.numOfStocks}</Td>
-					<Td>{item.valueOfStocks}</Td>
-				</>
+		<Box p={4} className={`content-area ${isDrawerOpen ? "drawer-open" : ""}`}>
+			<Heading size="lg" mb={4}>
+				Companies
+			</Heading>
+			<Box
+				display="flex"
+				justifyContent="space-between"
+				alignItems="center"
+				mb={4}
+			>
+				<FormControl ml={4}>
+					<FormLabel>Select a Company</FormLabel>
+					<Select onChange={handleBusinessSelectChange}>
+						<option value="">Select...</option>
+						{businesses.map((business: Business) => (
+							<option key={business.id} value={business.id}>
+								{business.name}
+							</option>
+						))}
+					</Select>
+				</FormControl>
+			</Box>
+			{selectedBusiness && (
+				<Box overflowX="auto">
+					<Table variant="striped" colorScheme="gray" minWidth="100%">
+						<Thead>
+							<Tr>
+								<Th>Bank Account</Th>
+								<Th>Holder Type</Th>
+								<Th>Quantity</Th>
+							</Tr>
+						</Thead>
+						<Tbody>
+							{stockholders.map((stockholder) => (
+								<Tr key={stockholder.holderId}>
+									<Td>{stockholder.bankAccount}</Td>
+									<Td>{stockholder.holderType}</Td>
+									<Td>{stockholder.quantity}</Td>
+								</Tr>
+							))}
+						</Tbody>
+					</Table>
+				</Box>
 			)}
-			searchEnabled={true}
-			isDrawerOpen={isDrawerOpen}
-		/>
+		</Box>
 	);
 };
 
