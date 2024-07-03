@@ -1,12 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./TopNav.css";
 import DrawerComponent from "../Drawer/Drawer";
 import logo from "../../assets/logo.png";
 import { Button } from "@chakra-ui/react";
+import { getUserDetails } from "../../services/authentication";
 
 const TopNav = () => {
 	const [isDrawerOpen, setIsDrawerOpen] = useState(true);
-
+	const [userDetails, setUserDetails] = useState(null);
 	const handleDrawerClose = () => {
 		setIsDrawerOpen(false);
 	};
@@ -14,6 +15,15 @@ const TopNav = () => {
 	const handleDrawerOpen = () => {
 		setIsDrawerOpen(true);
 	};
+	useEffect(() => {
+		async function userDetails() {
+			const userDetails = await getUserDetails();
+			setUserDetails(userDetails);
+			
+		}
+		userDetails();
+	}, [sessionStorage]);
+	
 
 	return (
 		<>
@@ -34,7 +44,7 @@ const TopNav = () => {
 
 				<div className="user-info">
 					<span className="user-text">
-						<span className="bold-name">John Doe</span> -{" "}
+						<span className="bold-name">{userDetails.email}</span> -{" "}
 						<span className="italic-role">Admin</span>
 					</span>
 

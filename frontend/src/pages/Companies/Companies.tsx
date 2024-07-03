@@ -17,6 +17,8 @@ import {
 	getAllBusinesses,
 	getBusinessStockholders,
 } from "../../services/stockExchangeService";
+import { isAuthenticated } from "../../services/authentication";
+import { useNavigate } from "react-router-dom";
 
 type Business = {
 	id: number;
@@ -37,7 +39,16 @@ const CompaniesPage = ({ isDrawerOpen }: { isDrawerOpen: boolean }) => {
 	const [selectedBusiness, setSelectedBusiness] = useState<Business>();
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 
+	const navigate = useNavigate();
+
 	useEffect(() => {
+		async function isAuth() {
+			let isAuthed = await isAuthenticated()
+			if (!isAuthed){
+				navigate("/");
+			}
+		}
+
 		async function fetchBusinesses() {
 			try {
 				setIsLoading(true);
@@ -49,7 +60,7 @@ const CompaniesPage = ({ isDrawerOpen }: { isDrawerOpen: boolean }) => {
 				setIsLoading(false);
 			}
 		}
-
+		isAuth();
 		fetchBusinesses();
 	}, []);
 

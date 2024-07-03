@@ -15,6 +15,8 @@ import {
 } from "@chakra-ui/react";
 import { SearchIcon } from "@chakra-ui/icons";
 import { getAllBusinesses } from "../../services/stockExchangeService";
+import { isAuthenticated } from "../../services/authentication";
+import { useNavigate } from "react-router-dom";
 
 type Business = {
 	id: number;
@@ -31,7 +33,16 @@ const MarketPage: React.FC<MarketPageProps> = ({ isDrawerOpen }) => {
 	const [businesses, setBusinesses] = useState<Business[]>([]);
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 
+	const navigate = useNavigate();
+
 	useEffect(() => {
+		async function isAuth() {
+			let isAuthed = await isAuthenticated()
+			if (!isAuthed){
+				navigate("/");
+			}
+		}
+		isAuth();
 		fetchBusinesses();
 	}, []);
 

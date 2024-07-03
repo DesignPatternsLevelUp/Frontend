@@ -16,6 +16,8 @@ import {
 	getUserStockHoldings,
 } from "../../services/stockExchangeService";
 import { User, UserStockHoldings } from "../../types/types";
+import { isAuthenticated } from "../../services/authentication";
+import { useNavigate } from "react-router-dom";
 
 const InvestorsPage = ({ isDrawerOpen }: { isDrawerOpen: boolean }) => {
 	const [users, setUsers] = useState<User[]>([]);
@@ -24,6 +26,8 @@ const InvestorsPage = ({ isDrawerOpen }: { isDrawerOpen: boolean }) => {
 		UserStockHoldings[]
 	>([]);
 	const [isLoading, setIsLoading] = useState<boolean>(false);
+
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		async function fetchUsers() {
@@ -37,7 +41,13 @@ const InvestorsPage = ({ isDrawerOpen }: { isDrawerOpen: boolean }) => {
 				setIsLoading(false);
 			}
 		}
-
+		async function isAuth() {
+			let isAuthed = await isAuthenticated()
+			if (!isAuthed){
+				navigate("/");
+			}
+		}
+		isAuth();
 		fetchUsers();
 	}, []);
 
