@@ -34,7 +34,7 @@ type Stockholder = {
 const CompaniesPage = ({ isDrawerOpen }: { isDrawerOpen: boolean }) => {
 	const [businesses, setBusinesses] = useState<Business[]>([]);
 	const [stockholders, setStockholders] = useState<Stockholder[]>([]);
-	const [selectedBusiness, setSelectedBusiness] = useState<Business>(null);
+	const [selectedBusiness, setSelectedBusiness] = useState<Business>();
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	useEffect(() => {
