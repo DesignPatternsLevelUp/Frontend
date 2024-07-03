@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./TopNav.css";
 import DrawerComponent from "../Drawer/Drawer";
 import logo from "../../assets/logo.png";
+import { Button } from "@chakra-ui/react";
 
 const TopNav = () => {
 	const [isDrawerOpen, setIsDrawerOpen] = useState(true);
@@ -37,7 +38,7 @@ const TopNav = () => {
 						<span className="italic-role">Admin</span>
 					</span>
 
-					<button className="logout-button">Logout</button>
+					<Button colorScheme="teal">Logout</Button>
 				</div>
 			</div>
 			<DrawerComponent isOpen={isDrawerOpen} onClose={handleDrawerClose} />
