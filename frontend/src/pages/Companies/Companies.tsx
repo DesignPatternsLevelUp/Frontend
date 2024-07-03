@@ -39,7 +39,6 @@ const CompaniesPage = ({ isDrawerOpen }: { isDrawerOpen: boolean }) => {
 				</>
 			)}
 			searchEnabled={true}
-			addButtonEnabled={true}
 			isDrawerOpen={isDrawerOpen}
 		/>
 	);

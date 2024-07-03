@@ -49,9 +49,8 @@ type SharedTableProps = {
 	title: string;
 	data: DataItem[];
 	headers: string[];
-	renderRow: (item: DataItem) => JSX.Element | Element;
+	renderRow: (item: DataItem) => JSX.Element;
 	searchEnabled?: boolean;
-	addButtonEnabled?: boolean;
 	isDrawerOpen: boolean;
 	selectionEnabled?: boolean;
 };
@@ -62,7 +61,6 @@ const SharedTable: React.FC<SharedTableProps> = ({
 	headers,
 	renderRow,
 	searchEnabled = false,
-	addButtonEnabled = true,
 	isDrawerOpen,
 }) => {
 	const [searchTerm, setSearchTerm] = useState("");
@@ -104,11 +102,6 @@ const SharedTable: React.FC<SharedTableProps> = ({
 							borderRadius="md"
 						/>
 					</InputGroup>
-				)}
-				{addButtonEnabled && (
-					<Button colorScheme="teal" onClick={handleAddItem}>
-						Add {title}
-					</Button>
 				)}
 			</Box>
 			<Box overflowX="auto">

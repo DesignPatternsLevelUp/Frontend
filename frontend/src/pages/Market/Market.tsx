@@ -78,7 +78,6 @@ const MarketPage = ({ isDrawerOpen }: { isDrawerOpen: boolean }) => {
 				</>
 			)}
 			searchEnabled={true}
-			addButtonEnabled={false}
 			isDrawerOpen={isDrawerOpen}
 		/>
 	);
