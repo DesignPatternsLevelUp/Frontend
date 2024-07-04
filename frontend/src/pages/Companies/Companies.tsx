@@ -43,8 +43,8 @@ const CompaniesPage = ({ isDrawerOpen }: { isDrawerOpen: boolean }) => {
 
 	useEffect(() => {
 		async function isAuth() {
-			let isAuthed = await isAuthenticated()
-			if (!isAuthed){
+			let isAuthed = await isAuthenticated();
+			if (!isAuthed) {
 				navigate("/");
 			}
 		}
@@ -124,9 +124,9 @@ const CompaniesPage = ({ isDrawerOpen }: { isDrawerOpen: boolean }) => {
 					<Table variant="striped" colorScheme="gray" minWidth="100%">
 						<Thead>
 							<Tr>
-								<Th>Bank Account</Th>
-								<Th>Holder Type</Th>
-								<Th>Quantity</Th>
+								<Th>ACCOUNT</Th>
+								<Th>HOLDER TYPE</Th>
+								<Th>QUANTITY</Th>
 							</Tr>
 						</Thead>
 						<Tbody>

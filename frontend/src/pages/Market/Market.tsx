@@ -37,8 +37,8 @@ const MarketPage: React.FC<MarketPageProps> = ({ isDrawerOpen }) => {
 
 	useEffect(() => {
 		async function isAuth() {
-			let isAuthed = await isAuthenticated()
-			if (!isAuthed){
+			let isAuthed = await isAuthenticated();
+			if (!isAuthed) {
 				navigate("/");
 			}
 		}
@@ -104,9 +104,9 @@ const MarketPage: React.FC<MarketPageProps> = ({ isDrawerOpen }) => {
 					<Table variant="striped" colorScheme="gray" minWidth="100%">
 						<Thead>
 							<Tr>
-								<Th>Name</Th>
-								<Th>Stock Code</Th>
-								<Th>Current Market Value</Th>
+								<Th>NAME</Th>
+								<Th>STOCK CODE</Th>
+								<Th>CURRENT MARKET VALUE</Th>
 							</Tr>
 						</Thead>
 						<Tbody>
