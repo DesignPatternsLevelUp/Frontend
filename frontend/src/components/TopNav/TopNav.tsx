@@ -7,7 +7,7 @@ import { getUserDetails } from "../../services/authentication";
 
 const TopNav = () => {
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-	const [email, setEmail] = useState('')
+	const [email, setEmail] = useState("");
 	const handleDrawerClose = () => {
 		setIsDrawerOpen(false);
 	};
@@ -18,14 +18,12 @@ const TopNav = () => {
 	useEffect(() => {
 		async function userDetails() {
 			const userDetails = await getUserDetails();
-			if (!userDetails){
-				setEmail(userDetails.email)
+			if (!userDetails) {
+				setEmail(userDetails.email);
 			}
 		}
 		userDetails();
 	}, [sessionStorage]);
-	
-
 
 	return (
 		<>
@@ -45,10 +43,12 @@ const TopNav = () => {
 				<div className="nav-items"></div>
 
 				<div className="user-info">
-					<span className="user-text">
-						<span className="bold-name">{email}</span> -{" "}
-						<span className="italic-role">Admin</span>
-					</span>
+					{email && (
+						<span className="user-text">
+							<span className="bold-name">{email}</span> -{" "}
+							<span className="italic-role">Admin</span>
+						</span>
+					)}
 
 					<Button colorScheme="teal">Logout</Button>
 				</div>
