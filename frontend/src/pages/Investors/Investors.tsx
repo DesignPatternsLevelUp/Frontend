@@ -42,8 +42,8 @@ const InvestorsPage = ({ isDrawerOpen }: { isDrawerOpen: boolean }) => {
 			}
 		}
 		async function isAuth() {
-			let isAuthed = await isAuthenticated()
-			if (!isAuthed){
+			let isAuthed = await isAuthenticated();
+			if (!isAuthed) {
 				navigate("/");
 			}
 		}
@@ -112,9 +112,9 @@ const InvestorsPage = ({ isDrawerOpen }: { isDrawerOpen: boolean }) => {
 					<Table variant="striped" colorScheme="gray" minWidth="100%">
 						<Thead>
 							<Tr>
-								<Th>Business ID</Th>
-								<Th>Quantity</Th>
-								<Th>Current Market Value</Th>
+								<Th>STOCK CODE</Th>
+								<Th>QUANTITY</Th>
+								<Th>CURRENT MARKET VALUE</Th>
 							</Tr>
 						</Thead>
 						<Tbody>
